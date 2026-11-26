@@ -11,9 +11,10 @@ A change is done only when all of these hold:
 
 1. `pwsh scripts/verify.ps1` exits `0` (lint, build, tests; zero warnings).
 2. `pwsh scripts/security-scan.ps1` reports no finding above the security baseline.
-3. Performance-sensitive changes: `pwsh scripts/perf-bench.ps1` stays inside the budgets.
-4. Docs that describe the change are updated in the same commit, on both sides (rule 5).
-5. API changes are in `docs/api/` (rule 4).
+3. API changes: `pwsh scripts/api-test.ps1` passes against the running API.
+4. Performance-sensitive changes: `pwsh scripts/perf-bench.ps1` stays inside the budgets.
+5. Docs that describe the change are updated in the same commit, on both sides (rule 5).
+6. API changes are in `docs/api/` (rule 4).
 
 ## 3. Never hide a failure
 
@@ -27,7 +28,8 @@ Adding, changing or removing an endpoint is not finished until:
 - the OpenAPI file in `docs/api/openapi/` is regenerated or edited,
 - the endpoint's Markdown doc exists in `docs/api/endpoints/<module>/` (template: `docs/api/endpoints/_TEMPLATE.md`),
 - new error codes are in `docs/api/errors.md`,
-- breaking changes are in `docs/api/changelog.md` with the date and the migration for the frontend.
+- breaking changes are in `docs/api/changelog.md` with the date and the migration for the frontend,
+- the endpoint has a request with tests in `docs/api/postman/api.postman_collection.json`, and `pwsh scripts/api-test.ps1` passes.
 
 ## 5. Docs are shared
 

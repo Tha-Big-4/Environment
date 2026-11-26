@@ -9,7 +9,7 @@ the **frontend builds against it**. Both setups have the same copy (`docs/` is s
 | [endpoints/](endpoints/) | One Markdown doc per endpoint, grouped by module, readable on GitHub. | Backend, when the endpoint ships |
 | [errors.md](errors.md) | Every stable error `code` and what the UI should do with it. | Backend |
 | [changelog.md](changelog.md) | Breaking and notable changes, newest first, with the frontend migration. | Backend; frontend acknowledges |
-| [postman/](postman/) | Postman collection and environments (no secrets). | Either side |
+| [postman/](postman/) | Postman collection with tests, and environments (no secrets). Run with `pwsh scripts/api-test.ps1`. | Backend |
 
 ## Conventions (defaults; record changes in `changelog.md`)
 

@@ -13,7 +13,8 @@ The contract is `docs/api/` (owned by the backend, shared through docs sync).
    `npx openapi-typescript ../docs/api/openapi/<file>.json -o src/api/types.ts` (run in `project/`).
 3. **Handle every documented error code** the endpoint can return; switch on `code`, show `detail`.
 4. **Before the backend ships:** `docker compose -f docker/compose.yml up -d api-mock` serves the
-   contract on http://localhost:4010.
+   contract on http://localhost:4010. `pwsh scripts/api-test.ps1 -Environment docs/api/postman/mock.postman_environment.json`
+   runs the backend's Postman tests against it.
 5. **Missing or wrong in the contract?** Do not guess. Write the need in the spec, tell the backend,
    or propose the change in `docs/api/` and sync it; the backend owns the final shape.
 6. **Tests mock HTTP** with responses that match the contract; no test reaches a real server.

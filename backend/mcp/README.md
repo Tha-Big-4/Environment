@@ -7,6 +7,9 @@ variables (`${NAME}`): put them in `backend/.env` and run `pwsh scripts/setup.ps
 |---|---|---|
 | **context7** | Current docs for the framework, ORM and libraries in use | none (sign in on first use) |
 | **postman** | Build, run and document collections from the shared contract (`docs/api/`) | sign in on first use |
+
+The **Postman CLI** (`npm install -g postman-cli`, installed by `setup.ps1 -Install`) runs the same
+collection locally and in CI: `pwsh scripts/api-test.ps1`. Local runs need no account and upload nothing.
 | **github** | Issues, PRs, code search | `GITHUB_TOKEN` (optional) |
 
 ## Optional servers (`optional/`)

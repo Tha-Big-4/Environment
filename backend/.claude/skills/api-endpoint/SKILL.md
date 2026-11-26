@@ -17,7 +17,9 @@ what the code does (PROCESS_RULES rule 4).
 4. **Architecture tests** must still pass (every endpoint has auth; tenant data is isolated).
 5. **Update the contract:** regenerate or edit `docs/api/openapi/`; write
    `docs/api/endpoints/<module>/<Endpoint Name>.md` from `_TEMPLATE.md`; add it to the module `SUMMARY.md`.
-6. **Postman:** re-import the OpenAPI file or add the request to `docs/api/postman/` (Postman MCP can do it).
+6. **Postman:** add the request to `docs/api/postman/api.postman_collection.json` in the module folder,
+   with tests for the success case and each documented error code (Postman MCP can draft it). Start the API
+   and run `pwsh scripts/api-test.ps1`; it must pass.
 7. **Benchmark hot paths:** add or extend a k6 script in `benchmarks/k6/`; `pwsh scripts/perf-bench.ps1`.
 8. **Gate and sync:** `pwsh scripts/verify.ps1 -Full`, `pwsh scripts/security-scan.ps1`,
    `pwsh scripts/sync-docs.ps1`. Commit code and both docs copies.

@@ -94,6 +94,19 @@ pwsh -NoProfile -File "$fake/frontend/scripts/install-stitch-skills.ps1" -Remove
 Assert 'stitch: -Remove deletes only what it installed' ((-not (Test-Path "$sk/stitch-loop")) -and (Test-Path "$sk/own-skill.md"))
 Remove-Item -Recurse -Force $src
 
+# --- api-test: missing CLI, collection or bad -EnvVar exits 2 ---
+$env:ENV_TEST_HIDE_TOOLS = 'postman'
+pwsh -NoProfile -File "$fake/frontend/scripts/api-test.ps1" *> $null
+Assert 'api-test: missing Postman CLI exits 2' ($LASTEXITCODE -eq 2) "got $LASTEXITCODE"
+$env:ENV_TEST_HIDE_TOOLS = ''
+if (Test-Tool 'postman') {
+    pwsh -NoProfile -File "$fake/frontend/scripts/api-test.ps1" -Collection "$fake/none.json" *> $null
+    Assert 'api-test: missing collection exits 2' ($LASTEXITCODE -eq 2) "got $LASTEXITCODE"
+    'x' | Set-Content "$fake/c.json"
+    pwsh -NoProfile -File "$fake/frontend/scripts/api-test.ps1" -Collection "$fake/c.json" -EnvVar 'bad value' *> $null
+    Assert 'api-test: malformed -EnvVar exits 2' ($LASTEXITCODE -eq 2) "got $LASTEXITCODE"
+}
+
 # --- docs sync ---
 'a' | Set-Content "$fake/frontend/docs/one.md"
 New-Item -ItemType Directory "$fake/frontend/docs/api" | Out-Null; 'b' | Set-Content "$fake/frontend/docs/api/two.md"

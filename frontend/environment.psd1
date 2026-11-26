@@ -14,6 +14,7 @@
         @{ Name = 'Semgrep';      Check = 'semgrep';     Windows = 'pipx install semgrep';                        MacOS = 'brew install semgrep';      Linux = 'pipx install semgrep' }
         @{ Name = 'osv-scanner';  Check = 'osv-scanner'; Windows = 'scoop install osv-scanner';                   MacOS = 'brew install osv-scanner';  Url = 'https://github.com/google/osv-scanner/releases' }
         @{ Name = 'Trivy';        Check = 'trivy';       Windows = 'scoop install trivy';                         MacOS = 'brew install trivy';        Url = 'https://trivy.dev/latest/getting-started/installation/' }
+        @{ Name = 'Postman CLI (API tests against the mock)'; Check = 'postman'; Optional = $true; Windows = 'npm install -g postman-cli'; MacOS = 'npm install -g postman-cli'; Linux = 'npm install -g postman-cli' }
         @{ Name = 'Chrome (for Lighthouse)'; Check = 'google-chrome'; Optional = $true; Windows = 'winget install --id Google.Chrome -e'; MacOS = 'brew install --cask google-chrome'; Url = 'https://www.google.com/chrome/'
            Paths = @('%ProgramFiles%\Google\Chrome\Application\chrome.exe', '%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe', '%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe', '/Applications/Google Chrome.app') }
     )

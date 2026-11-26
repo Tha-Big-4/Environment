@@ -15,11 +15,12 @@
         @{ Name = 'Semgrep';      Check = 'semgrep';     Windows = 'pipx install semgrep';                        MacOS = 'brew install semgrep';      Linux = 'pipx install semgrep' }
         @{ Name = 'osv-scanner';  Check = 'osv-scanner'; Windows = 'scoop install osv-scanner';                   MacOS = 'brew install osv-scanner';  Url = 'https://github.com/google/osv-scanner/releases' }
         @{ Name = 'Trivy';        Check = 'trivy';       Windows = 'scoop install trivy';                         MacOS = 'brew install trivy';        Url = 'https://trivy.dev/latest/getting-started/installation/' }
-        @{ Name = 'Postman CLI (optional)'; Check = 'postman'; Optional = $true; Windows = 'powershell.exe -NoProfile -Command "iex ((New-Object System.Net.WebClient).DownloadString(''https://dl-cli.pstmn.io/install/win64.ps1''))"'; Url = 'https://learning.postman.com/docs/postman-cli/postman-cli-installation/' }
+        @{ Name = 'Postman CLI';  Check = 'postman';     Windows = 'npm install -g postman-cli'; MacOS = 'npm install -g postman-cli'; Linux = 'npm install -g postman-cli'; Url = 'https://learning.postman.com/docs/postman-cli/postman-cli-installation/' }
     )
 
     EnvKeys = @(
         @{ Name = 'GITHUB_TOKEN'; For = 'GitHub MCP (fine-grained PAT)'; Url = 'https://github.com/settings/personal-access-tokens'; Optional = $true }
+        @{ Name = 'POSTMAN_API_KEY'; For = 'Postman CLI cloud runs (postman login --with-api-key); local runs need none'; Url = 'https://go.postman.co/settings/me/api-keys'; Optional = $true }
         @{ Name = 'DATABASE_URL'; For = 'Database MCP (read-only dev DB only)'; Url = 'docker/README.md'; Optional = $true }
     )
 

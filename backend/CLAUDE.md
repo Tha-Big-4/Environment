@@ -17,6 +17,7 @@ Guidance for Claude Code (and humans) working in the backend setup. The applicat
 | `pwsh scripts/verify.ps1` | Lint + build (warnings as errors) + unit tests for whatever stack is in `project/` |
 | `pwsh scripts/verify.ps1 -Full` | + integration tests (Testcontainers; Docker must run) |
 | `pwsh scripts/security-scan.ps1` | gitleaks, Semgrep, osv-scanner, stack audit, Trivy vs `benchmarks/security-baseline.json` |
+| `pwsh scripts/api-test.ps1 [-BaseUrl <url>]` | Postman CLI runs the `docs/api/postman/` collection tests against the running API |
 | `pwsh scripts/perf-bench.ps1 -Url <url>` | k6 smoke (`-Script load` for load) vs thresholds (API must be running) |
 | `pwsh scripts/cleanup-scan.ps1` | Duplicates (jscpd) and unused code (Roslyn / ruff / staticcheck / Knip); report only |
 | `pwsh scripts/sync-docs.ps1` | Mirror `docs/` to `../frontend/docs` (`-Check` to compare) |
@@ -34,7 +35,7 @@ Exit codes for every script: `0` clean, `1` findings, `2` a tool is missing or f
 - **Database:** changes are migrations. Create and report them; never apply them to a shared database yourself.
 - **API contract:** every endpoint change updates `docs/api/` (openapi, endpoint doc, errors, changelog).
 - **Docs are shared:** any change under `docs/` → `pwsh scripts/sync-docs.ps1`, commit both copies.
-- **Done** means: verify (`-Full`) passes, security scan at or under baseline, k6 within thresholds for
+- **Done** means: verify (`-Full`) passes, `api-test.ps1` passes, security scan at or under baseline, k6 within thresholds for
   hot paths, contract and docs updated and in sync.
 
 ## MCP servers

@@ -5,7 +5,7 @@ name: frontend-env
 services:
   api-mock:
     image: stoplight/prism:5
-    command: mock -h 0.0.0.0 -p 4010 /contract/${OPENAPI_FILE:-api-v1.example.json}
+    command: mock --multiprocess=false -h 0.0.0.0 -p 4010 /contract/${OPENAPI_FILE:-api-v1.example.json}
     volumes:
       - ../docs/api/openapi:/contract:ro
     ports:

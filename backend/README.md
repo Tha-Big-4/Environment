@@ -12,6 +12,7 @@ docker compose -f docker/compose.yml up -d       # postgres, redis, mailpit
 cd project; git clone <your-backend-repo> .      # or create a new API here
 cd ..; pwsh scripts/setup.ps1                    # installs git hooks into project/
 pwsh scripts/verify.ps1 -Full                    # lint + build + unit + integration
+pwsh scripts/api-test.ps1                        # Postman collection tests against the running API
 claude                                           # start Claude Code here: loads CLAUDE.md, skills, MCP servers
 ```
 
@@ -24,7 +25,7 @@ claude                                           # start Claude Code here: loads
 | `CLAUDE.md`, `AGENTS.md` | Instructions for AI agents (and humans) |
 | `.mcp.json`, `mcp/` | MCP servers (context7, postman, github; optional DB, Docker) |
 | `.claude/skills/` | api-endpoint, docs-management, folder-management, second-brain |
-| `scripts/` | setup, verify, security-scan, perf-bench, cleanup-scan, sync-docs (+ `tests/`) |
+| `scripts/` | setup, verify, api-test (Postman CLI), security-scan, perf-bench, cleanup-scan, sync-docs (+ `tests/`) |
 | `benchmarks/` | k6 smoke and load scripts with thresholds, security baseline |
 | `docker/` | Dev services and Dockerfile rules |
 | `.githooks/` | pre-commit (docs in sync, no secrets), pre-push (verify) |

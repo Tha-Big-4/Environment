@@ -8,12 +8,14 @@
 | Architecture | Layering, naming and security rules hold (e.g. every endpoint has auth) | Pre-push, CI | `tests/architecture` |
 | Integration | Real database, queue or HTTP pipeline (Testcontainers / Docker) | `verify.ps1 -Full`, CI | `tests/integration` |
 | Contract | Frontend and backend agree with `docs/api/openapi/` | CI | Both sides |
+| API | Every endpoint's success and documented error cases over real HTTP (Postman CLI) | `api-test.ps1`, CI | `docs/api/postman/` |
 | End-to-end | A user journey through the real UI (Playwright) | `verify.ps1 -Full`, nightly | `e2e/` |
 | Performance | Budgets and load thresholds (`PERFORMANCE_RULES.md`) | `perf-bench.ps1`, before release | `benchmarks/` |
 | Security | Scanners against the baseline (`SECURITY_RULES.md`) | `security-scan.ps1`, CI | `benchmarks/` |
 
 ## Automation
 
+- `scripts/api-test.ps1` runs the Postman collection against the running API (backend) or the mock (frontend).
 - `scripts/verify.ps1` detects the stack and runs lint → build → unit tests. `-Full` adds integration and e2e.
 - The `pre-push` hook runs `verify.ps1`; CI runs the same script, so local and CI agree.
 - Logs go to `reports/`; the console shows one line per step.

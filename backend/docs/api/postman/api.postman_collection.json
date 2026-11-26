@@ -1,0 +1,54 @@
+{
+  "info": {
+    "name": "API",
+    "description": "Shared API test collection. One folder per module, one request per endpoint, each with tests that match docs/api/endpoints/. Run: pwsh scripts/api-test.ps1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Every response: fast enough, and errors use the shared ProblemDetails shape (docs/api/errors.md).",
+          "pm.test('responds within 800 ms', () => pm.expect(pm.response.responseTime).to.be.below(800));",
+          "if (pm.response.code >= 400) {",
+          "  pm.test('error has status, title and code', () => {",
+          "    const b = pm.response.json();",
+          "    pm.expect(b).to.have.property('status');",
+          "    pm.expect(b).to.have.property('title');",
+          "    pm.expect(b).to.have.property('code');",
+          "  });",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "health",
+      "item": [
+        {
+          "name": "Get Health",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/health", "host": ["{{baseUrl}}"], "path": ["api", "v1", "health"] },
+            "description": "docs/api/openapi/api-v1.example.json → getHealth"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 200', () => pm.response.to.have.status(200));",
+                  "pm.test('body is { status: \"ok\" }', () => pm.expect(pm.response.json().status).to.eql('ok'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

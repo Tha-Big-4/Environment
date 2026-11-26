@@ -16,6 +16,7 @@ Guidance for Claude Code (and humans) working in the frontend setup. The applica
 | `pwsh scripts/setup.ps1` | Check tools, keys, plugins, hooks (`-Install`, `-ApplyEnv`) |
 | `pwsh scripts/verify.ps1` | Lint + build + unit tests for whatever stack is in `project/` (`-Full` adds e2e, `-Format` the formatter check) |
 | `pwsh scripts/security-scan.ps1` | gitleaks, Semgrep, osv-scanner, npm audit, Trivy vs `benchmarks/security-baseline.json` |
+| `pwsh scripts/api-test.ps1 -Environment docs/api/postman/mock.postman_environment.json` | The backend's Postman tests against the contract mock (Postman CLI) |
 | `pwsh scripts/perf-bench.ps1 -Url <url>` | Lighthouse CI vs `benchmarks/lighthouserc.json` (app must be running) |
 | `pwsh scripts/cleanup-scan.ps1` | Duplicates (jscpd) and unused code/deps (Knip); report only |
 | `pwsh scripts/sync-docs.ps1` | Mirror `docs/` to `../backend/docs` (`-Check` to compare) |
