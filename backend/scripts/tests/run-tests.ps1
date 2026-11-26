@@ -77,6 +77,23 @@ $outside = Join-Path $fake 'reason.md'; 'why' | Set-Content $outside
 pwsh -NoProfile -File "$fake/frontend/scripts/security-scan.ps1" -UpdateBaseline -allowincrease -ReasonFile $outside *> $null
 Assert 'security-scan: reason file outside docs/reports/security exits 2' ($LASTEXITCODE -eq 2) "got $LASTEXITCODE"
 
+# --- stitch skills installer: renames to kebab-case, writes a manifest, removes cleanly ---
+$src = New-TempDir
+New-Item -ItemType Directory "$src/plugins/stitch-design/skills/generate-design", "$src/plugins/stitch-utilities/skills/stitch-loop" -Force | Out-Null
+"---`nname: stitch::generate-design`ndescription: x`n---`nbody" | Set-Content "$src/plugins/stitch-design/skills/generate-design/SKILL.md"
+"---`nname: stitch-loop`ndescription: y`n---`nbody" | Set-Content "$src/plugins/stitch-utilities/skills/stitch-loop/SKILL.md"
+'license' | Set-Content "$src/LICENSE"
+pwsh -NoProfile -File "$fake/frontend/scripts/install-stitch-skills.ps1" -Source $src *> $null
+$sk = "$fake/frontend/.claude/skills"
+Assert 'stitch: installs with exit 0' ($LASTEXITCODE -eq 0) "got $LASTEXITCODE"
+Assert 'stitch: prefixes folder and fixes name' ((Get-Content "$sk/stitch-generate-design/SKILL.md" -Raw) -match '(?m)^name: stitch-generate-design$')
+Assert 'stitch: keeps an already-prefixed name' (Test-Path "$sk/stitch-loop/SKILL.md")
+Assert 'stitch: license and manifest written' ((Test-Path "$sk/STITCH_SKILLS_LICENSE") -and (Test-Path "$sk/.stitch-skills.json"))
+'mine' | Set-Content "$sk/own-skill.md"
+pwsh -NoProfile -File "$fake/frontend/scripts/install-stitch-skills.ps1" -Remove *> $null
+Assert 'stitch: -Remove deletes only what it installed' ((-not (Test-Path "$sk/stitch-loop")) -and (Test-Path "$sk/own-skill.md"))
+Remove-Item -Recurse -Force $src
+
 # --- docs sync ---
 'a' | Set-Content "$fake/frontend/docs/one.md"
 New-Item -ItemType Directory "$fake/frontend/docs/api" | Out-Null; 'b' | Set-Content "$fake/frontend/docs/api/two.md"

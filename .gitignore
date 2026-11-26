@@ -12,3 +12,8 @@ benchmarks/results/
 node_modules/
 .DS_Store
 Thumbs.db
+
+# Third-party skills installed by scripts/install-stitch-skills.ps1 (re-run to update)
+frontend/.claude/skills/stitch-*/
+frontend/.claude/skills/.stitch-skills.json
+frontend/.claude/skills/STITCH_SKILLS_LICENSE

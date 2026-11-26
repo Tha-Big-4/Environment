@@ -19,6 +19,7 @@ Guidance for Claude Code (and humans) working in the frontend setup. The applica
 | `pwsh scripts/perf-bench.ps1 -Url <url>` | Lighthouse CI vs `benchmarks/lighthouserc.json` (app must be running) |
 | `pwsh scripts/cleanup-scan.ps1` | Duplicates (jscpd) and unused code/deps (Knip); report only |
 | `pwsh scripts/sync-docs.ps1` | Mirror `docs/` to `../backend/docs` (`-Check` to compare) |
+| `pwsh scripts/install-stitch-skills.ps1` | Install/update Google's 16 Stitch skills into `.claude/skills/stitch-*` |
 | `docker compose -f docker/compose.yml up -d` | API mock of the shared contract on :4010 |
 
 Exit codes for every script: `0` clean, `1` findings, `2` a tool is missing or failed. Logs: `reports/`.

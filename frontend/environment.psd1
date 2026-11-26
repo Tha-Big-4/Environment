@@ -24,6 +24,6 @@
     )
 
     Plugins = @(
-        @{ Name = 'stitch-skills (Google Labs)'; Marker = '.claude/*/*stitch*'; Optional = $true; Command = 'npx --yes plugins add google-labs-code/stitch-skills --scope project --target claude-code' }
+        @{ Name = 'stitch-skills (Google Labs)'; Marker = '.claude/skills/.stitch-skills.json'; Optional = $true; Command = 'pwsh -NoProfile -File scripts/install-stitch-skills.ps1' }
     )
 }

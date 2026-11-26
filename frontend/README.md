@@ -25,7 +25,7 @@ claude                                          # start Claude Code here: loads 
 | `docs/` | **Shared** with `backend/docs`: API contract, rules, design, templates, plans, second brain |
 | `CLAUDE.md`, `AGENTS.md` | Instructions for AI agents (and humans) |
 | `.mcp.json`, `mcp/` | MCP servers and how to configure them |
-| `.claude/skills/` | design-workflow, api-consumer, docs-management, folder-management, second-brain |
+| `.claude/skills/` | design-workflow, api-consumer, docs-management, folder-management, second-brain; Google's `stitch-*` skills after `scripts/install-stitch-skills.ps1` |
 | `scripts/` | setup, verify, security-scan, perf-bench, cleanup-scan, sync-docs (+ `tests/`) |
 | `benchmarks/` | Lighthouse budgets, bundle budgets, security baseline |
 | `docker/` | API mock from the contract; production image (nginx, security headers) |

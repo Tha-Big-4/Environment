@@ -15,9 +15,13 @@ put them in `frontend/.env` and run `pwsh scripts/setup.ps1 -ApplyEnv`, then res
 
 ## Skills that go with them
 
-- **stitch-skills** (Google Labs): `pwsh scripts/setup.ps1 -Install` runs
-  `npx plugins add google-labs-code/stitch-skills --scope project --target claude-code`.
-  It is a Google Labs project and "not an officially supported Google product".
+- **stitch-skills** (Google Labs, Apache-2.0): 16 skills such as `stitch-generate-design`,
+  `stitch-extract-design-md`, `stitch-manage-design-system`, `stitch-loop`, `stitch-react-components`,
+  `stitch-shadcn-ui`. Install or update with `pwsh scripts/install-stitch-skills.ps1` (also run by
+  `setup.ps1 -Install`). It copies them into `.claude/skills/stitch-*` (git-ignored), renames each to
+  kebab-case for Claude Code and records the commit in `.claude/skills/.stitch-skills.json`.
+  Pin a version with `-Ref <sha>`. Upstream's `npx plugins … --scope project` route does not work for
+  Claude Code. It is a Google Labs project and "not an officially supported Google product".
 - **design-workflow** (`.claude/skills/design-workflow/`): Inspo → Stitch → tokens → build → Playwright check.
 - **frontend-design** (Claude plugin, optional): `/plugin install frontend-design@claude-plugins-official`.
 
