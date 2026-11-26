@@ -16,7 +16,7 @@ fails is never reported as a pass.
 
 `benchmarks/security-baseline.json` holds the accepted finding count per check. A run fails when any
 count goes **up**. Lower the baseline when you fix findings (`security-scan.ps1 -UpdateBaseline`, which only ever lowers counts);
-raising one needs `-AllowIncrease` plus a written reason in `docs/reports/security/`. Agents are denied `-AllowIncrease` and edits to `benchmarks/` and `.githooks/`.
+raising one needs `-AllowIncrease -ReasonFile docs/reports/security/<report>.md`; the script refuses without that written report. Agents are denied edits to `benchmarks/` and `.githooks/`, and every baseline change shows in the PR diff for review.
 
 ## Rules for code
 

@@ -21,8 +21,6 @@
       "Bash(git commit --no-verify*)",
       "PowerShell(git push --no-verify*)",
       "PowerShell(git commit --no-verify*)",
-      "Bash(pwsh scripts/security-scan.ps1*-AllowIncrease*)",
-      "PowerShell(pwsh scripts/security-scan.ps1*-AllowIncrease*)",
       "Edit(./benchmarks/**)",
       "Edit(./.githooks/**)"
     ]

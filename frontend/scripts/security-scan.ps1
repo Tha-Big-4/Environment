@@ -13,9 +13,18 @@ param(
     [string]$Path,
     [string[]]$Only = @('secrets', 'sast', 'deps', 'config'),
     [switch]$UpdateBaseline,
-    [switch]$AllowIncrease   # raise a baseline count; only with a written reason in docs/reports/security/
+    [switch]$AllowIncrease,  # raise a baseline count; needs -ReasonFile
+    [string]$ReasonFile      # an existing report under docs/reports/security/ explaining the increase
 )
 . "$PSScriptRoot/lib/common.ps1"
+if ($AllowIncrease) {
+    # Enforced here, not by agent permission globs (PowerShell accepts abbreviated, any-case parameters).
+    $reportsDir = [IO.Path]::GetFullPath((Join-Path (Get-EnvRoot) 'docs/reports/security'))
+    $reason = if ($ReasonFile) { [IO.Path]::GetFullPath($ReasonFile) } else { '' }
+    if (-not $reason -or -not $reason.StartsWith($reportsDir + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path $reason -PathType Leaf) -or -not (Get-Content $reason -Raw).Trim()) {
+        Write-StepLine FAIL 'arguments' "-AllowIncrease needs -ReasonFile pointing to a written report in docs/reports/security/"; exit 2
+    }
+}
 $Only = @($Only -split ',' | ForEach-Object Trim | Where-Object { $_ })
 $bad = @($Only | Where-Object { $_ -notin 'secrets', 'sast', 'deps', 'config' })
 if ($bad) { Write-StepLine FAIL 'arguments' "unknown check(s): $($bad -join ', '). Use secrets, sast, deps, config"; exit 2 }

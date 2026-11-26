@@ -70,6 +70,13 @@ pwsh -NoProfile -File "$fake/frontend/scripts/security-scan.ps1" -Only secrets *
 Assert 'security-scan: missing gitleaks exits 2' ($LASTEXITCODE -eq 2) "got $LASTEXITCODE"
 $env:ENV_TEST_HIDE_TOOLS = ''
 
+# --- raising the security baseline needs a report file ---
+pwsh -NoProfile -File "$fake/frontend/scripts/security-scan.ps1" -UpdateBaseline -Allow *> $null
+Assert 'security-scan: abbreviated -Allow without reason exits 2' ($LASTEXITCODE -eq 2) "got $LASTEXITCODE"
+$outside = Join-Path $fake 'reason.md'; 'why' | Set-Content $outside
+pwsh -NoProfile -File "$fake/frontend/scripts/security-scan.ps1" -UpdateBaseline -allowincrease -ReasonFile $outside *> $null
+Assert 'security-scan: reason file outside docs/reports/security exits 2' ($LASTEXITCODE -eq 2) "got $LASTEXITCODE"
+
 # --- docs sync ---
 'a' | Set-Content "$fake/frontend/docs/one.md"
 New-Item -ItemType Directory "$fake/frontend/docs/api" | Out-Null; 'b' | Set-Content "$fake/frontend/docs/api/two.md"
