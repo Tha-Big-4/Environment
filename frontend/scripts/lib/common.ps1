@@ -122,6 +122,12 @@ function Get-ProjectStacks([string]$Path) {
     @($found | Where-Object { $_.Dir -eq (Get-Item $Path).FullName -or $rootNames -notcontains $_.Name })
 }
 
+# Quotes a value as a PowerShell single-quoted literal so a path can never break out of a command string.
+function ConvertTo-PsLiteral([string]$Value) { "'" + ($Value -replace "'", "''") + "'" }
+
+# Safe file-name part from any folder or project name.
+function ConvertTo-SafeName([string]$Value) { $Value -replace '[^\w.-]', '_' }
+
 function Resolve-ProjectPath([string]$Path) {
     if (-not $Path) { $Path = Join-Path $script:EnvRoot 'project' }
     (Resolve-Path $Path).Path

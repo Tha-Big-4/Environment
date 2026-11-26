@@ -20,7 +20,7 @@ $jscpdCfg = Join-Path (Get-EnvRoot) 'config/jscpd.json'
 $codes = @()
 
 $codes += Invoke-Step -Name 'dupes' -Tool 'npx' -WorkDir $project -LogDir $out `
-    -Command "npx --yes jscpd@4.0.5 --config '$jscpdCfg' --output '$out/jscpd' ."
+    -Command "npx --yes jscpd@4.0.5 --config $(ConvertTo-PsLiteral $jscpdCfg) --output $(ConvertTo-PsLiteral "$out/jscpd") ."
 foreach ($s in $stacks) {
     switch ($s.Name) {
         'node'   { $codes += Invoke-Step -Name 'knip' -Tool 'npx' -WorkDir $s.Dir -LogDir $out -Command 'npx --yes knip@5 --no-progress' }

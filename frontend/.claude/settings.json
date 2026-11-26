@@ -2,15 +2,15 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
-      "Bash(pwsh scripts/verify.ps1*)",
-      "Bash(pwsh scripts/security-scan.ps1*)",
-      "Bash(pwsh scripts/cleanup-scan.ps1*)",
-      "Bash(pwsh scripts/sync-docs.ps1*)",
+      "Bash(pwsh scripts/verify.ps1)",
+      "Bash(pwsh scripts/security-scan.ps1)",
+      "Bash(pwsh scripts/cleanup-scan.ps1)",
+      "Bash(pwsh scripts/sync-docs.ps1 -Check)",
       "Bash(pwsh scripts/setup.ps1)",
-      "PowerShell(pwsh scripts/verify.ps1*)",
-      "PowerShell(pwsh scripts/security-scan.ps1*)",
-      "PowerShell(pwsh scripts/cleanup-scan.ps1*)",
-      "PowerShell(pwsh scripts/sync-docs.ps1*)",
+      "PowerShell(pwsh scripts/verify.ps1)",
+      "PowerShell(pwsh scripts/security-scan.ps1)",
+      "PowerShell(pwsh scripts/cleanup-scan.ps1)",
+      "PowerShell(pwsh scripts/sync-docs.ps1 -Check)",
       "PowerShell(pwsh scripts/setup.ps1)"
     ],
     "deny": [
@@ -20,7 +20,11 @@
       "Bash(git push --no-verify*)",
       "Bash(git commit --no-verify*)",
       "PowerShell(git push --no-verify*)",
-      "PowerShell(git commit --no-verify*)"
+      "PowerShell(git commit --no-verify*)",
+      "Bash(pwsh scripts/security-scan.ps1*-AllowIncrease*)",
+      "PowerShell(pwsh scripts/security-scan.ps1*-AllowIncrease*)",
+      "Edit(./benchmarks/**)",
+      "Edit(./.githooks/**)"
     ]
   }
 }

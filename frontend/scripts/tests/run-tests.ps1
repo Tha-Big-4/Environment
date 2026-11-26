@@ -52,6 +52,12 @@ Assert 'hidden tool reported missing' (-not (Test-Tool 'git'))
 $env:ENV_TEST_HIDE_TOOLS = ''
 Assert 'nonexistent tool missing' (-not (Test-Tool 'definitely-not-a-tool-xyz'))
 
+# --- quoting: a path with a quote cannot break out of a command string ---
+$evil = "x'; Write-Output pwned; '"
+$out = pwsh -NoProfile -Command "Write-Output $(ConvertTo-PsLiteral $evil)"
+Assert 'ConvertTo-PsLiteral keeps a hostile path literal' ($out -eq $evil) "got $out"
+Assert 'ConvertTo-SafeName strips quotes and separators' ((ConvertTo-SafeName "a'b/c d") -eq 'a_b_c_d')
+
 # --- verify on an empty project exits 2 ---
 $fake = New-FakeEnv
 pwsh -NoProfile -File "$fake/frontend/scripts/verify.ps1" *> $null

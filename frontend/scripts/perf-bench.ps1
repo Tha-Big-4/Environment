@@ -22,12 +22,13 @@ switch ($cfg.PerfTool) {
     'lighthouse' {
         if (-not (Test-Tool 'npx')) { Write-StepLine MISSING 'lighthouse' 'Node.js is required'; exit 2 }
         $rc = Join-Path $root 'benchmarks/lighthouserc.json'
-        $code = Invoke-Step -Name 'lighthouse' -WorkDir $root -LogDir $out -Command "npx --yes @lhci/cli@0.15.1 autorun --config='$rc' --collect.url='$Url' --upload.target=filesystem --upload.outputDir='$out'"
+        $code = Invoke-Step -Name 'lighthouse' -WorkDir $root -LogDir $out -Command "npx --yes @lhci/cli@0.15.1 autorun --config=$(ConvertTo-PsLiteral $rc) --collect.url=$(ConvertTo-PsLiteral $Url) --upload.target=filesystem --upload.outputDir=$(ConvertTo-PsLiteral $out)"
     }
     'k6' {
+        if ($Script -notmatch '^[\w-]+$') { Write-StepLine FAIL 'k6' "invalid script name '$Script'"; exit 2 }
         $js = Join-Path $root "benchmarks/k6/$Script.js"
         if (-not (Test-Path $js)) { Write-StepLine MISSING "k6/$Script" "$js not found"; exit 2 }
-        $code = Invoke-Step -Name "k6-$Script" -Tool 'k6' -WorkDir $root -LogDir $out -Command "k6 run -e BASE_URL='$Url' --summary-export '$out/summary.json' '$js'"
+        $code = Invoke-Step -Name "k6-$Script" -Tool 'k6' -WorkDir $root -LogDir $out -Command "k6 run -e BASE_URL=$(ConvertTo-PsLiteral $Url) --summary-export $(ConvertTo-PsLiteral "$out/summary.json") $(ConvertTo-PsLiteral $js)"
         if ($code -eq 99) { $code = 1 }   # k6: thresholds crossed
     }
     default { Write-StepLine MISSING 'perf' "unknown PerfTool '$($cfg.PerfTool)' in environment.psd1"; exit 2 }
