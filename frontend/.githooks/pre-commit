@@ -1,0 +1,9 @@
+#!/bin/sh
+# Blocks the commit when docs are out of sync or a secret is staged.
+ENV_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+pwsh -NoProfile -File "$ENV_DIR/scripts/sync-docs.ps1" -Check || exit 1
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --pre-commit --staged --no-banner --redact || exit 1
+else
+  echo "pre-commit: gitleaks not installed; run scripts/setup.ps1 -Install" >&2; exit 1
+fi

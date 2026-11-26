@@ -1,0 +1,47 @@
+name: environment-ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Docs identical in both setups
+        shell: pwsh
+        run: pwsh frontend/scripts/sync-docs.ps1 -Check
+
+      - name: Scripts and shared skills identical in both setups
+        shell: bash
+        run: |
+          diff -r frontend/scripts backend/scripts
+          for s in docs-management folder-management second-brain; do diff -r "frontend/.claude/skills/$s" "backend/.claude/skills/$s"; done
+
+      - name: Script self-tests (frontend, backend)
+        shell: pwsh
+        run: |
+          pwsh frontend/scripts/tests/run-tests.ps1; if ($LASTEXITCODE) { exit 1 }
+          pwsh backend/scripts/tests/run-tests.ps1;  if ($LASTEXITCODE) { exit 1 }
+
+      - name: JSON and PowerShell data files parse
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse -Filter *.json | Where-Object FullName -notmatch 'node_modules' | ForEach-Object { Get-Content $_ -Raw | ConvertFrom-Json | Out-Null }
+          Import-PowerShellDataFile frontend/environment.psd1 | Out-Null
+          Import-PowerShellDataFile backend/environment.psd1 | Out-Null
+
+      - name: No secrets (gitleaks)
+        shell: bash
+        run: |
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_linux_x64.tar.gz | tar xz gitleaks
+          ./gitleaks git . --no-banner --redact

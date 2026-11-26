@@ -1,0 +1,51 @@
+# Backend dev services. Run from backend/:
+#   docker compose -f docker/compose.yml up -d                       # postgres + redis + mailpit
+#   docker compose -f docker/compose.yml --profile sqlserver up -d   # SQL Server instead of / as well as Postgres
+#   docker compose -f docker/compose.yml --profile app up -d --build # the API itself (needs project/Dockerfile)
+# Credentials are for local development only; set them in backend/.env.
+name: backend-env
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev}
+      POSTGRES_DB: app
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev -d app"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports: ["127.0.0.1:6379:6379"]
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports: ["127.0.0.1:8025:8025", "127.0.0.1:1025:1025"]
+
+  sqlserver:
+    profiles: ["sqlserver"]
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Dev_Passw0rd!}
+    ports: ["127.0.0.1:1433:1433"]
+
+  api:
+    profiles: ["app"]
+    build: { context: ../project }
+    env_file:
+      - path: ../.env
+        required: false
+    ports: ["127.0.0.1:5000:8080"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    read_only: true
+    security_opt: ["no-new-privileges:true"]
+
+volumes:
+  pgdata:

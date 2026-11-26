@@ -1,0 +1,8 @@
+{
+  "threshold": 0,
+  "minTokens": 70,
+  "reporters": ["console", "json"],
+  "ignore": ["**/node_modules/**", "**/dist/**", "**/build/**", "**/bin/**", "**/obj/**", "**/target/**", "**/.venv/**", "**/vendor/**", "**/*.min.*", "**/coverage/**", "**/*.spec.*", "**/*.test.*"],
+  "gitignore": true,
+  "absolute": false
+}

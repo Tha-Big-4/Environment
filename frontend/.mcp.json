@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "stitch": {
+      "type": "http",
+      "url": "https://stitch.googleapis.com/mcp",
+      "headers": { "X-Goog-Api-Key": "${STITCH_API_KEY:-}" }
+    },
+    "inspo": {
+      "type": "http",
+      "url": "https://inspomcp.dev/api/mcp"
+    },
+    "boardui": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "boardui@latest", "mcp"]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": { "Authorization": "Bearer ${GITHUB_TOKEN:-}" }
+    }
+  }
+}

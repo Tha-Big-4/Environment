@@ -1,0 +1,27 @@
+# Frontend dev services. Run from frontend/:  docker compose -f docker/compose.yml up -d
+# api-mock serves the shared API contract (docs/api/openapi) so the UI can be built before the backend ships.
+name: frontend-env
+
+services:
+  api-mock:
+    image: stoplight/prism:5
+    command: mock -h 0.0.0.0 -p 4010 /contract/${OPENAPI_FILE:-api-v1.example.json}
+    volumes:
+      - ../docs/api/openapi:/contract:ro
+    ports:
+      - "4010:4010"
+
+  web:
+    profiles: ["app"]
+    build:
+      context: ../project
+      dockerfile: ../docker/Dockerfile
+      additional_contexts:
+        envdocker: .
+      args:
+        BUILD_CMD: ${BUILD_CMD:-npm run build}
+        DIST_DIR: ${DIST_DIR:-dist}
+    ports:
+      - "8080:8080"
+    read_only: true
+    tmpfs: [/tmp, /var/cache/nginx, /var/run]

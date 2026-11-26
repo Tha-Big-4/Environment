@@ -1,0 +1,1 @@
+{ "database": { "type": "stdio", "command": "npx", "args": ["-y", "@bytebase/dbhub@latest", "--transport", "stdio", "--readonly", "--dsn", "${DATABASE_URL}"] } }

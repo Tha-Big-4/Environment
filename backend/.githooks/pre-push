@@ -1,0 +1,4 @@
+#!/bin/sh
+# Runs the full gate (lint, build, tests) on the repo being pushed. Never bypass with --no-verify.
+ENV_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+pwsh -NoProfile -File "$ENV_DIR/scripts/verify.ps1" -Path "$(git rev-parse --show-toplevel)"

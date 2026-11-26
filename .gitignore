@@ -1,0 +1,14 @@
+# Projects live in <setup>/project/ with their own git history
+frontend/project/*
+!frontend/project/README.md
+backend/project/*
+!backend/project/README.md
+
+# Secrets and local output
+.env
+*.env.local
+reports/
+benchmarks/results/
+node_modules/
+.DS_Store
+Thumbs.db
